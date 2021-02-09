@@ -27,7 +27,7 @@ public class MainWindow {
 
     public void boton(ActionEvent actionEvent) {
         Button b = (Button) actionEvent.getSource();
-
+        if(b.getText() != "X" || b.getText() != "O")
         if (turno %2 == 0){
             b.setText("O");
             turno++;
