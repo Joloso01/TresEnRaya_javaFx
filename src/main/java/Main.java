@@ -22,7 +22,6 @@ public class Main extends Application {
         MainWindow mainWindow = loader.getController();
         mainWindow.setStage(primaryStage);
         mainWindow.setScene(scene);
-        mainWindow.setJugadorList(list);
 
         primaryStage.setTitle("Tres en raya");
         primaryStage.setScene(scene);

@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -23,18 +24,19 @@ public class MainWindow {
     int turno=1;
 
     @FXML
-    private Button btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,btn9,empezarPartida;
+    private Button btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,btn9,empezarPartida,btnPuntuacion;
 
     @FXML
     private MenuItem menuItemClose,menuItemAbout;
 
     @FXML
-    private GridPane grid0;
+    private GridPane grid0,gridpane0;
 
     @FXML
     private VBox vBox0;
 
-
+    @FXML
+    private RadioButton rBcpuVScpu, rBjVSj, rBjVScpu;
 
 
     public void setScene(Scene scene) {
@@ -44,11 +46,6 @@ public class MainWindow {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-
-    public void setJugadorList(List<Jugador> list){
-        jugadorList = list;
-    }
-
 
     public void boton(ActionEvent actionEvent) {
         Button b = (Button) actionEvent.getSource();
@@ -82,7 +79,7 @@ public class MainWindow {
 
     public void empezarPartida(ActionEvent actionEvent) {
         //comprobar modo de juego
-        turno = 1;
+        turno = 0;
         btn1.setText("");
         btn2.setText("");
         btn3.setText("");
@@ -92,6 +89,18 @@ public class MainWindow {
         btn7.setText("");
         btn8.setText("");
         btn9.setText("");
+
+        if (rBjVSj.isSelected() || rBjVScpu.isSelected()){
+
+            Button b = (Button) actionEvent.getSource();
+            comprobarGanador();
+            turno++;
+
+        }else if (rBcpuVScpu.isSelected()){
+
+        }else {
+
+        }
     }
 
     public void comprobarGanador(){
@@ -103,6 +112,7 @@ public class MainWindow {
                 (btn3.getText().equals("X") && btn6.getText().equals("X") && btn9.getText().equals("X")) ||
                 (btn1.getText().equals("X") && btn5.getText().equals("X") && btn9.getText().equals("X")) ||
                 (btn3.getText().equals("X") && btn5.getText().equals("X") && btn7.getText().equals("X"))){
+
 
 
             //victoria jugador 1
@@ -125,7 +135,13 @@ public class MainWindow {
         }
     }
 
+
+
     public void menuItemClose(ActionEvent actionEvent) {
         stage.close();
+    }
+
+    public void showPuntuaciones(ActionEvent actionEvent) {
+
     }
 }
