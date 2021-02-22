@@ -1,3 +1,4 @@
+import controller.Jugador;
 import controller.MainWindow;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -6,8 +7,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main extends Application {
+    private List<Jugador> list=new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -18,6 +22,7 @@ public class Main extends Application {
         MainWindow mainWindow = loader.getController();
         mainWindow.setStage(primaryStage);
         mainWindow.setScene(scene);
+        mainWindow.setJugadorList(list);
 
         primaryStage.setTitle("Tres en raya");
         primaryStage.setScene(scene);
