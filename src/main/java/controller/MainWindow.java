@@ -4,10 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.SplitPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -15,6 +12,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MainWindow {
 
@@ -30,13 +28,20 @@ public class MainWindow {
     private MenuItem menuItemClose,menuItemAbout;
 
     @FXML
-    private GridPane grid0,gridpane0;
+    private GridPane grid0;
 
     @FXML
     private VBox vBox0;
 
     @FXML
     private RadioButton rBcpuVScpu, rBjVSj, rBjVScpu;
+
+
+    private boolean partidaEmpezada=false;
+
+    Optional<String> result;
+
+
 
 
     public void setScene(Scene scene) {
@@ -50,16 +55,20 @@ public class MainWindow {
     public void boton(ActionEvent actionEvent) {
         Button b = (Button) actionEvent.getSource();
 
-        if (b.getText() != "X" && b.getText() != "O") {
-            if (turno % 2 == 0) {
-                b.setText("O");
-                turno++;
-            } else {
-                b.setText("X");
-                turno++;
+        if (partidaEmpezada){
+            if (b.isHover()){
+
+
+                if (b.getText() != "X" && b.getText() != "O") {
+                    turnoJugador(b);
+
+                    if (turno > 3) comprobarGanador();
+
+                } else {
+                }
             }
-        } else {
         }
+
     }
 
     public void clickMenuItemAbout(ActionEvent actionEvent) throws IOException {
@@ -89,11 +98,42 @@ public class MainWindow {
         btn7.setText("");
         btn8.setText("");
         btn9.setText("");
+        partidaEmpezada = true;
+
+
 
         if (rBjVSj.isSelected() || rBjVScpu.isSelected()){
 
-            Button b = (Button) actionEvent.getSource();
-            comprobarGanador();
+            if (rBjVSj.isSelected()){
+                TextInputDialog dialog = new TextInputDialog("jugador1");
+                dialog.setTitle("Nueva partida");
+                dialog.setHeaderText("Introduzca su nombre");
+                dialog.setContentText("nombre:");
+
+                result = dialog.showAndWait();
+                result.ifPresent(s -> System.out.println("Your name: " + s));
+
+
+                TextInputDialog dialog2 = new TextInputDialog("jugador2");
+                dialog2.setTitle("Nueva partida");
+                dialog2.setHeaderText("Introduzca su nombre");
+                dialog2.setContentText("nombre:");
+
+                result = dialog.showAndWait();
+                result.ifPresent(s2 -> System.out.println("Your name: " + s2));
+
+                jugadorList.add(new Jugador(result.get()));
+
+            }else {
+                TextInputDialog dialog = new TextInputDialog("jugador1");
+                dialog.setTitle("Nueva partida");
+                dialog.setHeaderText("Introduzca su nombre");
+                dialog.setContentText("nombre:");
+
+                Optional<String> result = dialog.showAndWait();
+                result.ifPresent(s -> System.out.println("Your name: " + s));
+            }
+
             turno++;
 
         }else if (rBcpuVScpu.isSelected()){
@@ -113,6 +153,11 @@ public class MainWindow {
                 (btn1.getText().equals("X") && btn5.getText().equals("X") && btn9.getText().equals("X")) ||
                 (btn3.getText().equals("X") && btn5.getText().equals("X") && btn7.getText().equals("X"))){
 
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Partida finalizada");
+            alert.setHeaderText(null);
+            alert.setContentText("Ha ganado el jugador 1!");
+            alert.showAndWait();
 
 
             //victoria jugador 1
@@ -126,6 +171,11 @@ public class MainWindow {
                 (btn1.getText().equals("O") && btn5.getText().equals("O") && btn9.getText().equals("O")) ||
                 (btn3.getText().equals("O") && btn5.getText().equals("O") && btn7.getText().equals("O"))){
 
+            Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+            alert2.setTitle("Partida finalizada");
+            alert2.setHeaderText(null);
+            alert2.setContentText("Ha ganado el jugador 2!");
+            alert2.showAndWait();
             //victoria jugador 2
 
         }else {
@@ -142,6 +192,28 @@ public class MainWindow {
     }
 
     public void showPuntuaciones(ActionEvent actionEvent) {
+        try {
 
+            DialogPane temp = FXMLLoader.load(getClass().getResource("/fxml/Puntuaciones.fxml"));
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setDialogPane(temp);
+            alert.setTitle("Tabla de puntuaciones");
+            alert.showAndWait();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void turnoJugador(Button b) {
+        if (turno % 2 == 0) {
+            b.setText("O");
+            turno++;
+        } else {
+            b.setText("X");
+            turno++;
+        }
     }
 }
+
