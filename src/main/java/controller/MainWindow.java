@@ -10,15 +10,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class MainWindow {
 
     private Scene scene;
     private Stage stage;
-    private List<Jugador> jugadorList = new ArrayList<>();
     int turno=1;
 
     @FXML
@@ -36,6 +33,17 @@ public class MainWindow {
     @FXML
     private RadioButton rBcpuVScpu, rBjVSj, rBjVScpu;
 
+    TableView puntuacionesLista;
+
+    {
+        try {
+            puntuacionesLista = FXMLLoader.load(getClass().getResource("/fxml/Puntuaciones.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    Puntuaciones puntuaciones = new Puntuaciones();
 
     private boolean partidaEmpezada=false;
 
@@ -99,6 +107,7 @@ public class MainWindow {
         btn8.setText("");
         btn9.setText("");
         partidaEmpezada = true;
+        puntuaciones.getTableView();
 
 
 
@@ -111,7 +120,7 @@ public class MainWindow {
                 dialog.setContentText("nombre:");
 
                 result = dialog.showAndWait();
-                result.ifPresent(s -> System.out.println("Your name: " + s));
+                result.ifPresent(s -> puntuaciones.setPlayer1Name(s));
 
 
                 TextInputDialog dialog2 = new TextInputDialog("jugador2");
@@ -120,9 +129,7 @@ public class MainWindow {
                 dialog2.setContentText("nombre:");
 
                 result = dialog.showAndWait();
-                result.ifPresent(s2 -> System.out.println("Your name: " + s2));
-
-                jugadorList.add(new Jugador(result.get()));
+                result.ifPresent(s2 -> puntuaciones.setPlayer2Name(s2));
 
             }else {
                 TextInputDialog dialog = new TextInputDialog("jugador1");
@@ -131,7 +138,7 @@ public class MainWindow {
                 dialog.setContentText("nombre:");
 
                 Optional<String> result = dialog.showAndWait();
-                result.ifPresent(s -> System.out.println("Your name: " + s));
+                result.ifPresent(s -> puntuaciones.setPlayer1Name(s));
             }
 
             turno++;
@@ -156,9 +163,10 @@ public class MainWindow {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Partida finalizada");
             alert.setHeaderText(null);
-            alert.setContentText("Ha ganado el jugador 1!");
+            alert.setContentText("Ha ganado "+puntuaciones.getPlayer1Name()+ " !");
             alert.showAndWait();
-
+            puntuaciones.victoriaJugador(puntuaciones.getPlayer1Name());
+            puntuaciones.derrotaJugador(puntuaciones.getPlayer2Name());
 
             //victoria jugador 1
 
@@ -174,8 +182,10 @@ public class MainWindow {
             Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
             alert2.setTitle("Partida finalizada");
             alert2.setHeaderText(null);
-            alert2.setContentText("Ha ganado el jugador 2!");
+            alert2.setContentText("Ha ganado "+puntuaciones.getPlayer2Name()+ " !");
             alert2.showAndWait();
+            puntuaciones.victoriaJugador(puntuaciones.getPlayer2Name());
+            puntuaciones.derrotaJugador(puntuaciones.getPlayer1Name());
             //victoria jugador 2
 
         }else {
@@ -192,18 +202,10 @@ public class MainWindow {
     }
 
     public void showPuntuaciones(ActionEvent actionEvent) {
-        try {
-
-            DialogPane temp = FXMLLoader.load(getClass().getResource("/fxml/Puntuaciones.fxml"));
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setDialogPane(temp);
-            alert.setTitle("Tabla de puntuaciones");
-            alert.showAndWait();
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            Stage stage2 = new Stage();
+            stage2.setTitle("Puntuacion de los jugadores");
+            stage2.setScene(new Scene(puntuacionesLista));
+            stage2.show();
     }
 
     public void turnoJugador(Button b) {

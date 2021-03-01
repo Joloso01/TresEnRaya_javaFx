@@ -1,4 +1,4 @@
-import controller.Jugador;
+import model.Jugador;
 import controller.MainWindow;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
