@@ -22,7 +22,7 @@ public class MainWindow {
     private Button btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,btn9,empezarPartida,btnPuntuacion;
 
     @FXML
-    private MenuItem menuItemClose,menuItemAbout;
+    private MenuItem menuItemClose,menuItemAbout,menuItemCambiar;
 
     @FXML
     private GridPane grid0;
@@ -33,19 +33,12 @@ public class MainWindow {
     @FXML
     private RadioButton rBcpuVScpu, rBjVSj, rBjVScpu;
 
-    TableView puntuacionesLista;
 
-    {
-        try {
-            puntuacionesLista = FXMLLoader.load(getClass().getResource("/fxml/Puntuaciones.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     Puntuaciones puntuaciones = new Puntuaciones();
 
     private boolean partidaEmpezada=false;
+    private boolean turnoJugador=true;
 
     Optional<String> result;
 
@@ -107,9 +100,6 @@ public class MainWindow {
         btn8.setText("");
         btn9.setText("");
         partidaEmpezada = true;
-        puntuaciones.getTableView();
-
-
 
         if (rBjVSj.isSelected() || rBjVScpu.isSelected()){
 
@@ -139,6 +129,8 @@ public class MainWindow {
 
                 Optional<String> result = dialog.showAndWait();
                 result.ifPresent(s -> puntuaciones.setPlayer1Name(s));
+
+                turnoBot();
             }
 
             turno++;
@@ -148,6 +140,12 @@ public class MainWindow {
         }else {
 
         }
+    }
+
+    private void turnoBot() {
+
+
+
     }
 
     public void comprobarGanador(){
@@ -202,6 +200,16 @@ public class MainWindow {
     }
 
     public void showPuntuaciones(ActionEvent actionEvent) {
+        TableView puntuacionesLista = null;
+
+        {
+            try {
+                puntuacionesLista = FXMLLoader.load(getClass().getResource("/fxml/Puntuaciones.fxml"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
             Stage stage2 = new Stage();
             stage2.setTitle("Puntuacion de los jugadores");
             stage2.setScene(new Scene(puntuacionesLista));
@@ -216,6 +224,19 @@ public class MainWindow {
             b.setText("X");
             turno++;
         }
+    }
+
+    public void menuItemCambiar(ActionEvent actionEvent) {
+        String mode;
+        scene.getStylesheets().clear();
+        if(menuItemCambiar.getText().equals("Oscuro")) {
+            scene.getStylesheets().add("css/temaClaro.css");
+            mode = "Claro";
+        }else {
+            scene.getStylesheets().add("css/temaOscuro.css");
+            mode = "Oscuro";
+        }
+        menuItemCambiar.setText(mode);
     }
 }
 

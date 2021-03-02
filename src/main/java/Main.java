@@ -15,9 +15,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        String css = getClass().getResource("css/temaClaro.css").toExternalForm();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/mainWindow.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(css);
 
         MainWindow mainWindow = loader.getController();
         mainWindow.setStage(primaryStage);
