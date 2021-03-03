@@ -38,7 +38,6 @@ public class MainWindow {
     Puntuaciones puntuaciones = new Puntuaciones();
 
     private boolean partidaEmpezada=false;
-    private boolean Jugador=true;
 
     Optional<String> result;
 
@@ -58,24 +57,19 @@ public class MainWindow {
 
             if (rBjVSj.isSelected()){
                 if (partidaEmpezada) {
-                    if ((Jugador)) {
                         if (b.getText() != "X" && b.getText() != "O") {
                             turnoJugador(b);
                             if (turno > 3) comprobarGanador();
                         }
-                    }
                 }
             }else if (rBjVScpu.isSelected()){
                 if (partidaEmpezada){
-                    if ((Jugador)){
                         if (b.getText() != "X" && b.getText() != "O") {
                             turnoJugador(b);
-                            Jugador=false;
                             if (turno <9) turnoBot();
-
                             if (turno > 3) comprobarGanadorBot();
                         }
-                    }
+
                 }
             }
     }
@@ -113,7 +107,6 @@ public class MainWindow {
                     btn8.setText("");
                     btn9.setText("");
                     partidaEmpezada = true;
-                    Jugador=true;
 
                     TextInputDialog dialog = new TextInputDialog("jugador1");
                     dialog.setTitle("Nueva partida");
@@ -149,7 +142,6 @@ public class MainWindow {
                     btn8.setText("");
                     btn9.setText("");
                     partidaEmpezada = true;
-                    Jugador=true;
 
                     TextInputDialog dialog = new TextInputDialog("jugador1");
                     dialog.setTitle("Nueva partida");
@@ -184,46 +176,36 @@ public class MainWindow {
                 rBcpuVScpu.setDisable(true);
 
                 while (partidaEmpezada){
-                    Jugador=false;
                     turnoBot();
                     comprobarGanadorBotvsBot();
                 }
 
             }
-        }else {
-            empezarPartida.setDisable(true);
-            rBjVSj.setDisable(true);
-            rBjVScpu.setDisable(true);
-            rBcpuVScpu.setDisable(true);
         }
 
     }
 
     private void turnoBot() {
         boolean puesto=false;
-        if (!Jugador){
             while (!puesto){
-                int casilla = (int) ((Math.random()*8)+1);
+                int casilla = (int) (Math.random() * 9)+1;
                     switch (casilla){
                         case 1:
                             if (!btn1.getText().equals("X") && !btn1.getText().equals("O")){
                                 puesto=true;
                                 turnoJugador(btn1);
-                                Jugador=true;
                             }
                             break;
                         case 2:
                             if (!btn2.getText().equals("X") && !btn2.getText().equals("O")){
                                 puesto=true;
                                 turnoJugador(btn2);
-                                Jugador=true;
                             }
                             break;
                         case 3:
                             if (!btn3.getText().equals("X") && !btn3.getText().equals("O")){
                                 puesto=true;
                                 turnoJugador(btn3);
-                                Jugador=true;
 
                             }
                             break;
@@ -231,52 +213,42 @@ public class MainWindow {
                             if (!btn4.getText().equals("X") && !btn4.getText().equals("O")){
                                 puesto=true;
                                 turnoJugador(btn4);
-                                Jugador=true;
                             }
                             break;
                         case 5:
                             if (!btn5.getText().equals("X") && !btn5.getText().equals("O")){
                                 puesto=true;
                                 turnoJugador(btn5);
-                                Jugador=true;
                             }
                             break;
                         case 6:
                             if (!btn6.getText().equals("X") && !btn6.getText().equals("O")){
                                 puesto=true;
                                 turnoJugador(btn6);
-                                Jugador=true;
                             }
                             break;
                         case 7:
                             if (!btn7.getText().equals("X") && !btn7.getText().equals("O")){
                                 puesto=true;
                                 turnoJugador(btn7);
-                                Jugador=true;
                             }
                             break;
                         case 8:
                             if (!btn8.getText().equals("X") && !btn8.getText().equals("O")){
                                 puesto=true;
                                 turnoJugador(btn8);
-                                Jugador=true;
                             }
                             break;
                         case 9:
                             if (!btn9.getText().equals("X") && !btn9.getText().equals("O")){
                                 puesto=true;
                                 turnoJugador(btn9);
-                                Jugador=true;
                             }
                             break;
                 }
             }
-        }else {
-
-        }
-
-
     }
+
 
     public void comprobarGanador(){
         if ((btn1.getText().equals("X") && btn2.getText().equals("X") && btn3.getText().equals("X")) ||
