@@ -38,7 +38,7 @@ public class MainWindow {
     Puntuaciones puntuaciones = new Puntuaciones();
 
     private boolean partidaEmpezada=false;
-    private boolean turnoJugador=true;
+    private boolean Jugador=true;
 
     Optional<String> result;
 
@@ -56,20 +56,28 @@ public class MainWindow {
     public void boton(ActionEvent actionEvent) {
         Button b = (Button) actionEvent.getSource();
 
-        if (partidaEmpezada){
-            if (b.isHover()){
+            if (rBjVSj.isSelected()){
+                if (partidaEmpezada) {
+                    if ((Jugador)) {
+                        if (b.getText() != "X" && b.getText() != "O") {
+                            turnoJugador(b);
+                            if (turno > 3) comprobarGanador();
+                        }
+                    }
+                }
+            }else if (rBjVScpu.isSelected()){
+                if (partidaEmpezada){
+                    if ((Jugador)){
+                        if (b.getText() != "X" && b.getText() != "O") {
+                            turnoJugador(b);
+                            Jugador=false;
+                            if (turno <9) turnoBot();
 
-
-                if (b.getText() != "X" && b.getText() != "O") {
-                    turnoJugador(b);
-
-                    if (turno > 3) comprobarGanador();
-
-                } else {
+                            if (turno > 3) comprobarGanadorBot();
+                        }
+                    }
                 }
             }
-        }
-
     }
 
     public void clickMenuItemAbout(ActionEvent actionEvent) throws IOException {
@@ -89,61 +97,183 @@ public class MainWindow {
 
     public void empezarPartida(ActionEvent actionEvent) {
         //comprobar modo de juego
-        turno = 0;
-        btn1.setText("");
-        btn2.setText("");
-        btn3.setText("");
-        btn4.setText("");
-        btn5.setText("");
-        btn6.setText("");
-        btn7.setText("");
-        btn8.setText("");
-        btn9.setText("");
-        partidaEmpezada = true;
+        if ((!partidaEmpezada)){
 
-        if (rBjVSj.isSelected() || rBjVScpu.isSelected()){
+            if (rBjVSj.isSelected() || rBjVScpu.isSelected()){
 
-            if (rBjVSj.isSelected()){
-                TextInputDialog dialog = new TextInputDialog("jugador1");
-                dialog.setTitle("Nueva partida");
-                dialog.setHeaderText("Introduzca su nombre");
-                dialog.setContentText("nombre:");
+                if (rBjVSj.isSelected()){
+                    turno = 1;
+                    btn1.setText("");
+                    btn2.setText("");
+                    btn3.setText("");
+                    btn4.setText("");
+                    btn5.setText("");
+                    btn6.setText("");
+                    btn7.setText("");
+                    btn8.setText("");
+                    btn9.setText("");
+                    partidaEmpezada = true;
+                    Jugador=true;
 
-                result = dialog.showAndWait();
-                result.ifPresent(s -> puntuaciones.setPlayer1Name(s));
+                    TextInputDialog dialog = new TextInputDialog("jugador1");
+                    dialog.setTitle("Nueva partida");
+                    dialog.setHeaderText("Introduzca su nombre");
+                    dialog.setContentText("nombre:");
+
+                    result = dialog.showAndWait();
+                    result.ifPresent(s -> puntuaciones.setPlayer1Name(s));
 
 
-                TextInputDialog dialog2 = new TextInputDialog("jugador2");
-                dialog2.setTitle("Nueva partida");
-                dialog2.setHeaderText("Introduzca su nombre");
-                dialog2.setContentText("nombre:");
+                    TextInputDialog dialog2 = new TextInputDialog("jugador2");
+                    dialog2.setTitle("Nueva partida");
+                    dialog2.setHeaderText("Introduzca su nombre");
+                    dialog2.setContentText("nombre:");
 
-                result = dialog.showAndWait();
-                result.ifPresent(s2 -> puntuaciones.setPlayer2Name(s2));
+                    result = dialog.showAndWait();
+                    result.ifPresent(s2 -> puntuaciones.setPlayer2Name(s2));
+                    empezarPartida.setDisable(true);
+                    rBjVSj.setDisable(true);
+                    rBjVScpu.setDisable(true);
+                    rBcpuVScpu.setDisable(true);
 
-            }else {
-                TextInputDialog dialog = new TextInputDialog("jugador1");
-                dialog.setTitle("Nueva partida");
-                dialog.setHeaderText("Introduzca su nombre");
-                dialog.setContentText("nombre:");
+                }else {
 
-                Optional<String> result = dialog.showAndWait();
-                result.ifPresent(s -> puntuaciones.setPlayer1Name(s));
+                    turno = 1;
+                    btn1.setText("");
+                    btn2.setText("");
+                    btn3.setText("");
+                    btn4.setText("");
+                    btn5.setText("");
+                    btn6.setText("");
+                    btn7.setText("");
+                    btn8.setText("");
+                    btn9.setText("");
+                    partidaEmpezada = true;
+                    Jugador=true;
 
-                turnoBot();
+                    TextInputDialog dialog = new TextInputDialog("jugador1");
+                    dialog.setTitle("Nueva partida");
+                    dialog.setHeaderText("Introduzca su nombre");
+                    dialog.setContentText("nombre:");
+
+                    Optional<String> result = dialog.showAndWait();
+                    result.ifPresent(s -> puntuaciones.setPlayer1Name(s));
+                    empezarPartida.setDisable(true);
+                    rBjVSj.setDisable(true);
+                    rBjVScpu.setDisable(true);
+                    rBcpuVScpu.setDisable(true);
+
+                }
+
+            }else if (rBcpuVScpu.isSelected()){
+
+                turno = 1;
+                btn1.setText("");
+                btn2.setText("");
+                btn3.setText("");
+                btn4.setText("");
+                btn5.setText("");
+                btn6.setText("");
+                btn7.setText("");
+                btn8.setText("");
+                btn9.setText("");
+                partidaEmpezada = true;
+                empezarPartida.setDisable(true);
+                rBjVSj.setDisable(true);
+                rBjVScpu.setDisable(true);
+                rBcpuVScpu.setDisable(true);
+
+                while (partidaEmpezada){
+                    Jugador=false;
+                    turnoBot();
+                    comprobarGanadorBotvsBot();
+                }
+
             }
-
-            turno++;
-
-        }else if (rBcpuVScpu.isSelected()){
-
         }else {
-
+            empezarPartida.setDisable(true);
+            rBjVSj.setDisable(true);
+            rBjVScpu.setDisable(true);
+            rBcpuVScpu.setDisable(true);
         }
+
     }
 
     private void turnoBot() {
+        boolean puesto=false;
+        if (!Jugador){
+            while (!puesto){
+                int casilla = (int) ((Math.random()*8)+1);
+                    switch (casilla){
+                        case 1:
+                            if (!btn1.getText().equals("X") && !btn1.getText().equals("O")){
+                                puesto=true;
+                                turnoJugador(btn1);
+                                Jugador=true;
+                            }
+                            break;
+                        case 2:
+                            if (!btn2.getText().equals("X") && !btn2.getText().equals("O")){
+                                puesto=true;
+                                turnoJugador(btn2);
+                                Jugador=true;
+                            }
+                            break;
+                        case 3:
+                            if (!btn3.getText().equals("X") && !btn3.getText().equals("O")){
+                                puesto=true;
+                                turnoJugador(btn3);
+                                Jugador=true;
 
+                            }
+                            break;
+                        case 4:
+                            if (!btn4.getText().equals("X") && !btn4.getText().equals("O")){
+                                puesto=true;
+                                turnoJugador(btn4);
+                                Jugador=true;
+                            }
+                            break;
+                        case 5:
+                            if (!btn5.getText().equals("X") && !btn5.getText().equals("O")){
+                                puesto=true;
+                                turnoJugador(btn5);
+                                Jugador=true;
+                            }
+                            break;
+                        case 6:
+                            if (!btn6.getText().equals("X") && !btn6.getText().equals("O")){
+                                puesto=true;
+                                turnoJugador(btn6);
+                                Jugador=true;
+                            }
+                            break;
+                        case 7:
+                            if (!btn7.getText().equals("X") && !btn7.getText().equals("O")){
+                                puesto=true;
+                                turnoJugador(btn7);
+                                Jugador=true;
+                            }
+                            break;
+                        case 8:
+                            if (!btn8.getText().equals("X") && !btn8.getText().equals("O")){
+                                puesto=true;
+                                turnoJugador(btn8);
+                                Jugador=true;
+                            }
+                            break;
+                        case 9:
+                            if (!btn9.getText().equals("X") && !btn9.getText().equals("O")){
+                                puesto=true;
+                                turnoJugador(btn9);
+                                Jugador=true;
+                            }
+                            break;
+                }
+            }
+        }else {
+
+        }
 
 
     }
@@ -158,6 +288,7 @@ public class MainWindow {
                 (btn1.getText().equals("X") && btn5.getText().equals("X") && btn9.getText().equals("X")) ||
                 (btn3.getText().equals("X") && btn5.getText().equals("X") && btn7.getText().equals("X"))){
 
+            partidaEmpezada=false;
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Partida finalizada");
             alert.setHeaderText(null);
@@ -165,6 +296,10 @@ public class MainWindow {
             alert.showAndWait();
             puntuaciones.victoriaJugador(puntuaciones.getPlayer1Name());
             puntuaciones.derrotaJugador(puntuaciones.getPlayer2Name());
+            empezarPartida.setDisable(false);
+            rBjVSj.setDisable(false);
+            rBjVScpu.setDisable(false);
+            rBcpuVScpu.setDisable(false);
 
             //victoria jugador 1
 
@@ -177,6 +312,7 @@ public class MainWindow {
                 (btn1.getText().equals("O") && btn5.getText().equals("O") && btn9.getText().equals("O")) ||
                 (btn3.getText().equals("O") && btn5.getText().equals("O") && btn7.getText().equals("O"))){
 
+            partidaEmpezada=false;
             Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
             alert2.setTitle("Partida finalizada");
             alert2.setHeaderText(null);
@@ -184,11 +320,150 @@ public class MainWindow {
             alert2.showAndWait();
             puntuaciones.victoriaJugador(puntuaciones.getPlayer2Name());
             puntuaciones.derrotaJugador(puntuaciones.getPlayer1Name());
+            empezarPartida.setDisable(false);
+            rBjVSj.setDisable(false);
+            rBjVScpu.setDisable(false);
+            rBcpuVScpu.setDisable(false);
             //victoria jugador 2
 
-        }else {
+        }else if (turno >9){
 
             //empate
+            partidaEmpezada=false;
+            Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+            alert2.setTitle("Partida finalizada");
+            alert2.setHeaderText(null);
+            alert2.setContentText("Ha habido un empate!");
+            alert2.showAndWait();
+            empezarPartida.setDisable(false);
+            rBjVSj.setDisable(false);
+            rBjVScpu.setDisable(false);
+            rBcpuVScpu.setDisable(false);
+
+        }
+    }
+
+    public void comprobarGanadorBot(){
+        if ((btn1.getText().equals("X") && btn2.getText().equals("X") && btn3.getText().equals("X")) ||
+                (btn4.getText().equals("X") && btn5.getText().equals("X") && btn6.getText().equals("X")) ||
+                (btn7.getText().equals("X") && btn8.getText().equals("X") && btn9.getText().equals("X")) ||
+                (btn1.getText().equals("X") && btn4.getText().equals("X") && btn7.getText().equals("X")) ||
+                (btn2.getText().equals("X") && btn5.getText().equals("X") && btn8.getText().equals("X")) ||
+                (btn3.getText().equals("X") && btn6.getText().equals("X") && btn9.getText().equals("X")) ||
+                (btn1.getText().equals("X") && btn5.getText().equals("X") && btn9.getText().equals("X")) ||
+                (btn3.getText().equals("X") && btn5.getText().equals("X") && btn7.getText().equals("X"))){
+
+            partidaEmpezada=false;
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Partida finalizada");
+            alert.setHeaderText(null);
+            alert.setContentText("Ha ganado "+puntuaciones.getPlayer1Name()+ " !");
+            alert.showAndWait();
+            puntuaciones.victoriaJugador(puntuaciones.getPlayer1Name());
+            puntuaciones.derrotaJugador(puntuaciones.getPlayer2Name());
+            empezarPartida.setDisable(false);
+            rBjVSj.setDisable(false);
+            rBjVScpu.setDisable(false);
+            rBcpuVScpu.setDisable(false);
+
+            //victoria jugador 1
+
+        }else if ((btn1.getText().equals("O") && btn2.getText().equals("O") && btn3.getText().equals("O")) ||
+                (btn4.getText().equals("O") && btn5.getText().equals("O") && btn6.getText().equals("O")) ||
+                (btn7.getText().equals("O") && btn8.getText().equals("O") && btn9.getText().equals("O")) ||
+                (btn1.getText().equals("O") && btn4.getText().equals("O") && btn7.getText().equals("O")) ||
+                (btn2.getText().equals("O") && btn5.getText().equals("O") && btn8.getText().equals("O")) ||
+                (btn3.getText().equals("O") && btn6.getText().equals("O") && btn9.getText().equals("O")) ||
+                (btn1.getText().equals("O") && btn5.getText().equals("O") && btn9.getText().equals("O")) ||
+                (btn3.getText().equals("O") && btn5.getText().equals("O") && btn7.getText().equals("O"))){
+
+            partidaEmpezada=false;
+            Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+            alert2.setTitle("Partida finalizada");
+            alert2.setHeaderText(null);
+            alert2.setContentText("Ha ganado el BOT !");
+            alert2.showAndWait();
+            puntuaciones.derrotaJugador(puntuaciones.getPlayer1Name());
+            empezarPartida.setDisable(false);
+            rBjVSj.setDisable(false);
+            rBjVScpu.setDisable(false);
+            rBcpuVScpu.setDisable(false);
+            //victoria jugador 2
+
+        }else if (turno >9){
+
+            //empate
+            partidaEmpezada=false;
+            Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+            alert2.setTitle("Partida finalizada");
+            alert2.setHeaderText(null);
+            alert2.setContentText("Ha habido un empate!");
+            alert2.showAndWait();
+            empezarPartida.setDisable(false);
+            rBjVSj.setDisable(false);
+            rBjVScpu.setDisable(false);
+            rBcpuVScpu.setDisable(false);
+
+        }
+    }
+
+    public void comprobarGanadorBotvsBot(){
+        if ((btn1.getText().equals("X") && btn2.getText().equals("X") && btn3.getText().equals("X")) ||
+                (btn4.getText().equals("X") && btn5.getText().equals("X") && btn6.getText().equals("X")) ||
+                (btn7.getText().equals("X") && btn8.getText().equals("X") && btn9.getText().equals("X")) ||
+                (btn1.getText().equals("X") && btn4.getText().equals("X") && btn7.getText().equals("X")) ||
+                (btn2.getText().equals("X") && btn5.getText().equals("X") && btn8.getText().equals("X")) ||
+                (btn3.getText().equals("X") && btn6.getText().equals("X") && btn9.getText().equals("X")) ||
+                (btn1.getText().equals("X") && btn5.getText().equals("X") && btn9.getText().equals("X")) ||
+                (btn3.getText().equals("X") && btn5.getText().equals("X") && btn7.getText().equals("X"))){
+
+            partidaEmpezada=false;
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Partida finalizada");
+            alert.setHeaderText(null);
+            alert.setContentText("Ha ganado el BOT 1 !");
+            alert.showAndWait();
+            empezarPartida.setDisable(false);
+            rBjVSj.setDisable(false);
+            rBjVScpu.setDisable(false);
+            rBcpuVScpu.setDisable(false);
+
+            //victoria jugador 1
+
+        }else if ((btn1.getText().equals("O") && btn2.getText().equals("O") && btn3.getText().equals("O")) ||
+                (btn4.getText().equals("O") && btn5.getText().equals("O") && btn6.getText().equals("O")) ||
+                (btn7.getText().equals("O") && btn8.getText().equals("O") && btn9.getText().equals("O")) ||
+                (btn1.getText().equals("O") && btn4.getText().equals("O") && btn7.getText().equals("O")) ||
+                (btn2.getText().equals("O") && btn5.getText().equals("O") && btn8.getText().equals("O")) ||
+                (btn3.getText().equals("O") && btn6.getText().equals("O") && btn9.getText().equals("O")) ||
+                (btn1.getText().equals("O") && btn5.getText().equals("O") && btn9.getText().equals("O")) ||
+                (btn3.getText().equals("O") && btn5.getText().equals("O") && btn7.getText().equals("O"))){
+
+            partidaEmpezada=false;
+            Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+            alert2.setTitle("Partida finalizada");
+            alert2.setHeaderText(null);
+            alert2.setContentText("Ha ganado el BOT 2 !");
+            alert2.showAndWait();
+            empezarPartida.setDisable(false);
+            rBjVSj.setDisable(false);
+            rBjVScpu.setDisable(false);
+            rBcpuVScpu.setDisable(false);
+            //victoria jugador 2
+
+        }else if (turno >9){
+
+            //empate
+            partidaEmpezada=false;
+            Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+            alert2.setTitle("Partida finalizada");
+            alert2.setHeaderText(null);
+            alert2.setContentText("Ha habido un empate!");
+            alert2.showAndWait();
+            empezarPartida.setDisable(false);
+            rBjVSj.setDisable(false);
+            rBjVScpu.setDisable(false);
+            rBcpuVScpu.setDisable(false);
 
         }
     }
@@ -238,5 +513,7 @@ public class MainWindow {
         }
         menuItemCambiar.setText(mode);
     }
+
+
 }
 
