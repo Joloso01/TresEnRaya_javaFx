@@ -1,3 +1,5 @@
+import controller.Puntuaciones;
+import javafx.scene.control.TableView;
 import model.Jugador;
 import controller.MainWindow;
 import javafx.application.Application;

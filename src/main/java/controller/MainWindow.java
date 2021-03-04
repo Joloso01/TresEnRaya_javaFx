@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.Jugador;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -272,7 +273,6 @@ public class MainWindow {
             rBjVSj.setDisable(false);
             rBjVScpu.setDisable(false);
             rBcpuVScpu.setDisable(false);
-
             //victoria jugador 1
 
         }else if ((btn1.getText().equals("O") && btn2.getText().equals("O") && btn3.getText().equals("O")) ||
@@ -311,6 +311,8 @@ public class MainWindow {
             rBjVSj.setDisable(false);
             rBjVScpu.setDisable(false);
             rBcpuVScpu.setDisable(false);
+            puntuaciones.EmpateJugador(puntuaciones.getPlayer1Name());
+            puntuaciones.EmpateJugador(puntuaciones.getPlayer2Name());
 
         }
     }
@@ -332,12 +334,10 @@ public class MainWindow {
             alert.setContentText("Ha ganado "+puntuaciones.getPlayer1Name()+ " !");
             alert.showAndWait();
             puntuaciones.victoriaJugador(puntuaciones.getPlayer1Name());
-            puntuaciones.derrotaJugador(puntuaciones.getPlayer2Name());
             empezarPartida.setDisable(false);
             rBjVSj.setDisable(false);
             rBjVScpu.setDisable(false);
             rBcpuVScpu.setDisable(false);
-
             //victoria jugador 1
 
         }else if ((btn1.getText().equals("O") && btn2.getText().equals("O") && btn3.getText().equals("O")) ||
@@ -375,6 +375,7 @@ public class MainWindow {
             rBjVSj.setDisable(false);
             rBjVScpu.setDisable(false);
             rBcpuVScpu.setDisable(false);
+            puntuaciones.EmpateJugador(puntuaciones.getPlayer1Name());
 
         }
     }
@@ -447,7 +448,7 @@ public class MainWindow {
     }
 
     public void showPuntuaciones(ActionEvent actionEvent) {
-        TableView puntuacionesLista = null;
+        TableView<model.Jugador> puntuacionesLista = null;
 
         {
             try {
@@ -461,6 +462,16 @@ public class MainWindow {
             stage2.setTitle("Puntuacion de los jugadores");
             stage2.setScene(new Scene(puntuacionesLista));
             stage2.show();
+            puntuacionesLista.getItems().clear();
+            puntuacionesLista.getColumns().clear();
+            puntuacionesLista.getColumns().addAll(puntuaciones.jugador,
+                                                puntuaciones.victorias,
+                                                puntuaciones.derrotas,
+                                                puntuaciones.empates,
+                                                puntuaciones.totalPartidas);
+
+            puntuacionesLista.getItems().addAll(puntuaciones.getPuntuacionesLista());
+
     }
 
     public void turnoJugador(Button b) {
