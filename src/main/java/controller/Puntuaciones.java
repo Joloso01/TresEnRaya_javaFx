@@ -15,7 +15,6 @@ public class Puntuaciones {
     private String player2Name;
     private TableView<Jugador> jugadorTableView= null;
     private ObservableList<Jugador> puntuacionesLista;
-    ObservableList columnasTabla;
     private boolean encontrado;
 
     TableColumn<Jugador, String> jugador = new TableColumn<Jugador, String>("Jugador");
@@ -24,7 +23,7 @@ public class Puntuaciones {
     TableColumn<Jugador, Integer> empates = new TableColumn<>("Empates");
     TableColumn<Jugador, Integer> totalPartidas = new TableColumn<>("Total Partidas");
 
-
+    //constructor para inicializar los datos de las columnas y la observeList
     public Puntuaciones() {
 
 
@@ -42,13 +41,15 @@ public class Puntuaciones {
         totalPartidas.setCellValueFactory(new PropertyValueFactory<>("partidasJugadas"));
     }
 
-
+    //metodo para añadir un jugador a la observeList
     public void addJugador(String nombre){
         puntuacionesLista.add(new Jugador(nombre));
 
     }
 
+    //metodo para añadir una victoria al jugador y sumar la partida jugada al total
     public void victoriaJugador(String nombre){
+        //el metodo busca al jugador, si no lo encuentra crea uno nuevo, le suma la victoria y la partida jugada al total
        Jugador jugador= buscarJugador(nombre);
         if (encontrado){
             jugador.setVictorias(jugador.getVictorias()+1);
@@ -62,6 +63,7 @@ public class Puntuaciones {
             }
         }
 
+        //elimina el nombre de la variable player1Name para evitar duplicados y errores con el nombre en la clase MainWindow
         if (nombre.equals(player1Name)){
             player1Name="";
         }else {
@@ -69,7 +71,9 @@ public class Puntuaciones {
         }
     }
 
+    //metodo para añadir una derrota al jugador y sumar la partida jugada al total
     public void derrotaJugador(String nombre){
+        //el metodo busca al jugador, si no lo encuentra crea uno nuevo, le suma la derrota y la partida jugada al total
         Jugador jugador= buscarJugador(nombre);
         if (encontrado){
             jugador.setDerrotas(jugador.getDerrotas()+1);
@@ -86,6 +90,7 @@ public class Puntuaciones {
 
         }
 
+        //elimina el nombre de la variable player1Name para evitar duplicados y errores con el nombre en la clase MainWindow
         if (nombre.equals(player1Name)){
             player1Name="";
         }else {
@@ -93,6 +98,7 @@ public class Puntuaciones {
         }
     }
 
+    //metodo para sumar un empate al jugador y una partida al total de jugadas
     public void EmpateJugador(String nombre){
         Jugador jugador= buscarJugador(nombre);
         if (encontrado){
@@ -109,6 +115,7 @@ public class Puntuaciones {
 
         }
 
+        //elimina el nombre de la variable player1Name para evitar duplicados y errores con el nombre en la clase MainWindow
         if (nombre.equals(player1Name)){
             player1Name="";
         }else {
@@ -116,6 +123,7 @@ public class Puntuaciones {
         }
     }
 
+    //metodo que busca en la observeList y devuelve el jugador para que los metodos victoria, derrota y empate puedan modificar las partidas
     public Jugador buscarJugador(String nombre){
         for (Jugador j:puntuacionesLista){
             if (j.getNom().equals(nombre)){

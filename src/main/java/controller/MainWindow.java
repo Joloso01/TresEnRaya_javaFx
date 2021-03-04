@@ -53,9 +53,11 @@ public class MainWindow {
         this.stage = stage;
     }
 
+    //metodo asociado a todos los botones del gridPane
     public void boton(ActionEvent actionEvent) {
         Button b = (Button) actionEvent.getSource();
 
+            //modo de juego Jugador vs Jugador
             if (rBjVSj.isSelected()){
                 if (partidaEmpezada) {
                         if (b.getText() != "X" && b.getText() != "O") {
@@ -63,6 +65,7 @@ public class MainWindow {
                             if (turno > 3) comprobarGanador();
                         }
                 }
+                //modo de juego Jugador vs Bot
             }else if (rBjVScpu.isSelected()){
                 if (partidaEmpezada){
                         if (b.getText() != "X" && b.getText() != "O") {
@@ -75,6 +78,7 @@ public class MainWindow {
             }
     }
 
+    //metodo para cambiar a la pantalla About.fxml cuando se presiona el boton del menu
     public void clickMenuItemAbout(ActionEvent actionEvent) throws IOException {
 
         if(menuItemAbout.getText().equals("About")) {
@@ -89,11 +93,12 @@ public class MainWindow {
         }
     }
 
-
+    //metodo asociado al boton empezar partida
     public void empezarPartida(ActionEvent actionEvent) {
-        //comprobar modo de juego
+        //si la partida esta empezada desabilita el boton para que no se pueda empezar una partida encima de otra
         if ((!partidaEmpezada)){
 
+            //comprobar si el radioButton seleccionado es jugador vs jugador o jugador vs maquina
             if (rBjVSj.isSelected() || rBjVScpu.isSelected()){
 
                 if (rBjVSj.isSelected()){
@@ -109,6 +114,7 @@ public class MainWindow {
                     btn9.setText("");
                     partidaEmpezada = true;
 
+                    //enseña una ventana para introducir el nombre del jugador
                     TextInputDialog dialog = new TextInputDialog("jugador1");
                     dialog.setTitle("Nueva partida");
                     dialog.setHeaderText("Introduzca su nombre");
@@ -125,6 +131,8 @@ public class MainWindow {
 
                     result = dialog.showAndWait();
                     result.ifPresent(s2 -> puntuaciones.setPlayer2Name(s2));
+
+                    //desabilita todos los botones para que no pueda haber conflicto al cambiar de modo en medio de una partida
                     empezarPartida.setDisable(true);
                     rBjVSj.setDisable(true);
                     rBjVScpu.setDisable(true);
@@ -157,7 +165,7 @@ public class MainWindow {
                     rBcpuVScpu.setDisable(true);
 
                 }
-
+            //Modo de juego Bot vs Bot
             }else if (rBcpuVScpu.isSelected()){
 
                 turno = 1;
@@ -186,6 +194,7 @@ public class MainWindow {
 
     }
 
+    //este metodo hace que se escoja una casilla al azar
     private void turnoBot() {
         boolean puesto=false;
             while (!puesto){
@@ -250,8 +259,9 @@ public class MainWindow {
             }
     }
 
-
+    //metodo para comprobar si el ganador en el modo jugador vs jugador
     public void comprobarGanador(){
+        //se comprueba el valor de los botones en horizontal, vertical y diagonal
         if ((btn1.getText().equals("X") && btn2.getText().equals("X") && btn3.getText().equals("X")) ||
                 (btn4.getText().equals("X") && btn5.getText().equals("X") && btn6.getText().equals("X")) ||
                 (btn7.getText().equals("X") && btn8.getText().equals("X") && btn9.getText().equals("X")) ||
@@ -261,6 +271,7 @@ public class MainWindow {
                 (btn1.getText().equals("X") && btn5.getText().equals("X") && btn9.getText().equals("X")) ||
                 (btn3.getText().equals("X") && btn5.getText().equals("X") && btn7.getText().equals("X"))){
 
+            //victoria jugador 1
             partidaEmpezada=false;
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Partida finalizada");
@@ -273,8 +284,8 @@ public class MainWindow {
             rBjVSj.setDisable(false);
             rBjVScpu.setDisable(false);
             rBcpuVScpu.setDisable(false);
-            //victoria jugador 1
 
+            //se comprueba el valor de los botones en horizontal, vertical y diagonal
         }else if ((btn1.getText().equals("O") && btn2.getText().equals("O") && btn3.getText().equals("O")) ||
                 (btn4.getText().equals("O") && btn5.getText().equals("O") && btn6.getText().equals("O")) ||
                 (btn7.getText().equals("O") && btn8.getText().equals("O") && btn9.getText().equals("O")) ||
@@ -317,7 +328,9 @@ public class MainWindow {
         }
     }
 
+    //metodo para comprobar el ganador en el modo jugador vs Bot
     public void comprobarGanadorBot(){
+        //se comprueba el valor de los botones en horizontal, vertical y diagonal
         if ((btn1.getText().equals("X") && btn2.getText().equals("X") && btn3.getText().equals("X")) ||
                 (btn4.getText().equals("X") && btn5.getText().equals("X") && btn6.getText().equals("X")) ||
                 (btn7.getText().equals("X") && btn8.getText().equals("X") && btn9.getText().equals("X")) ||
@@ -327,19 +340,26 @@ public class MainWindow {
                 (btn1.getText().equals("X") && btn5.getText().equals("X") && btn9.getText().equals("X")) ||
                 (btn3.getText().equals("X") && btn5.getText().equals("X") && btn7.getText().equals("X"))){
 
+            //victoria jugador 1
             partidaEmpezada=false;
+
+            //abrir una ventana para enseñar el ganador
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Partida finalizada");
             alert.setHeaderText(null);
             alert.setContentText("Ha ganado "+puntuaciones.getPlayer1Name()+ " !");
             alert.showAndWait();
+
+            //suma una victoria al jugador
             puntuaciones.victoriaJugador(puntuaciones.getPlayer1Name());
+
+            //habilita los botones para poder empezar una nueva partida
             empezarPartida.setDisable(false);
             rBjVSj.setDisable(false);
             rBjVScpu.setDisable(false);
             rBcpuVScpu.setDisable(false);
-            //victoria jugador 1
 
+            //se comprueba el valor de los botones en horizontal, vertical y diagonal
         }else if ((btn1.getText().equals("O") && btn2.getText().equals("O") && btn3.getText().equals("O")) ||
                 (btn4.getText().equals("O") && btn5.getText().equals("O") && btn6.getText().equals("O")) ||
                 (btn7.getText().equals("O") && btn8.getText().equals("O") && btn9.getText().equals("O")) ||
@@ -349,18 +369,24 @@ public class MainWindow {
                 (btn1.getText().equals("O") && btn5.getText().equals("O") && btn9.getText().equals("O")) ||
                 (btn3.getText().equals("O") && btn5.getText().equals("O") && btn7.getText().equals("O"))){
 
+            //victoria Bot 2
             partidaEmpezada=false;
+
+            //abrir una ventana para enseñar el ganador
+
             Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
             alert2.setTitle("Partida finalizada");
             alert2.setHeaderText(null);
             alert2.setContentText("Ha ganado el BOT !");
             alert2.showAndWait();
+
+            //suma una derrota al jugador
             puntuaciones.derrotaJugador(puntuaciones.getPlayer1Name());
             empezarPartida.setDisable(false);
             rBjVSj.setDisable(false);
             rBjVScpu.setDisable(false);
             rBcpuVScpu.setDisable(false);
-            //victoria jugador 2
+
 
         }else if (turno >9){
 
@@ -380,7 +406,9 @@ public class MainWindow {
         }
     }
 
+    //metodo para comprobar el ganador en el modo bot vs bot
     public void comprobarGanadorBotvsBot(){
+        //se comprueba el valor de los botones en horizontal, vertical y diagonal
         if ((btn1.getText().equals("X") && btn2.getText().equals("X") && btn3.getText().equals("X")) ||
                 (btn4.getText().equals("X") && btn5.getText().equals("X") && btn6.getText().equals("X")) ||
                 (btn7.getText().equals("X") && btn8.getText().equals("X") && btn9.getText().equals("X")) ||
@@ -390,6 +418,7 @@ public class MainWindow {
                 (btn1.getText().equals("X") && btn5.getText().equals("X") && btn9.getText().equals("X")) ||
                 (btn3.getText().equals("X") && btn5.getText().equals("X") && btn7.getText().equals("X"))){
 
+            //victoria Bot 1
             partidaEmpezada=false;
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Partida finalizada");
@@ -401,8 +430,8 @@ public class MainWindow {
             rBjVScpu.setDisable(false);
             rBcpuVScpu.setDisable(false);
 
-            //victoria jugador 1
 
+            //se comprueba el valor de los botones en horizontal, vertical y diagonal
         }else if ((btn1.getText().equals("O") && btn2.getText().equals("O") && btn3.getText().equals("O")) ||
                 (btn4.getText().equals("O") && btn5.getText().equals("O") && btn6.getText().equals("O")) ||
                 (btn7.getText().equals("O") && btn8.getText().equals("O") && btn9.getText().equals("O")) ||
@@ -412,6 +441,7 @@ public class MainWindow {
                 (btn1.getText().equals("O") && btn5.getText().equals("O") && btn9.getText().equals("O")) ||
                 (btn3.getText().equals("O") && btn5.getText().equals("O") && btn7.getText().equals("O"))){
 
+            //victoria Bot 2
             partidaEmpezada=false;
             Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
             alert2.setTitle("Partida finalizada");
@@ -422,7 +452,7 @@ public class MainWindow {
             rBjVSj.setDisable(false);
             rBjVScpu.setDisable(false);
             rBcpuVScpu.setDisable(false);
-            //victoria jugador 2
+
 
         }else if (turno >9){
 
@@ -441,13 +471,15 @@ public class MainWindow {
         }
     }
 
-
-
+    //este metodo esta asociado al boton del menu close y cierra la ventana del programa
     public void menuItemClose(ActionEvent actionEvent) {
         stage.close();
     }
 
+    //este metodo esta asociado al boton de puntuaciones y muestra una ventana con las puntuaciones de los jugador(Victorias,Derrotas,...)
     public void showPuntuaciones(ActionEvent actionEvent) {
+
+        //instanciar el fxml que contiene la tabla de puntuaciones
         TableView<model.Jugador> puntuacionesLista = null;
 
         {
@@ -462,18 +494,24 @@ public class MainWindow {
             stage2.setTitle("Puntuacion de los jugadores");
             stage2.setScene(new Scene(puntuacionesLista));
             stage2.show();
+
+            //limpiar la observeList de las columnas y jugadores para que no se produzca un error de duplicacion
             puntuacionesLista.getItems().clear();
             puntuacionesLista.getColumns().clear();
+
+            //añadir las columnas en el orden que se van a mostrar los datos de los jugadores
             puntuacionesLista.getColumns().addAll(puntuaciones.jugador,
                                                 puntuaciones.victorias,
                                                 puntuaciones.derrotas,
                                                 puntuaciones.empates,
                                                 puntuaciones.totalPartidas);
 
+            //añadir la lista de los jugadores
             puntuacionesLista.getItems().addAll(puntuaciones.getPuntuacionesLista());
 
     }
 
+    //metodo para cambiar de turno entre X, O y escribir el valor en el boton que se le pasa por parametro
     public void turnoJugador(Button b) {
         if (turno % 2 == 0) {
             b.setText("O");
@@ -484,14 +522,15 @@ public class MainWindow {
         }
     }
 
+    //este metodo esta asociado al boton del menu cambiar css y sirve para intercambiar entre el tema claro y oscuro
     public void menuItemCambiar(ActionEvent actionEvent) {
         String mode;
         scene.getStylesheets().clear();
         if(menuItemCambiar.getText().equals("Oscuro")) {
-            scene.getStylesheets().add("css/temaClaro.css");
+            scene.getStylesheets().add("css/temaOscuro.css");
             mode = "Claro";
         }else {
-            scene.getStylesheets().add("css/temaOscuro.css");
+            scene.getStylesheets().add("css/temaClaro.css");
             mode = "Oscuro";
         }
         menuItemCambiar.setText(mode);

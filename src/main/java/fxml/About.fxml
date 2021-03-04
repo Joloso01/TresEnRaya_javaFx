@@ -5,7 +5,7 @@
 
 <VBox fx:id="vBoxAbout0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="vboxAboutlabel" text="About" />
-      <Label fx:id="descripcio1" text="Label" />
+      <Label fx:id="vboxAboutlabel" text="Tres en raya desarrollado por Jose Bermejo" />
+      <Label fx:id="descripcio1" text="2 Dam A" />
    </children>
 </VBox>

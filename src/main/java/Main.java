@@ -13,16 +13,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends Application {
-    private List<Jugador> list=new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        //cargar el css con el que iniciara la ventana
         String css = getClass().getResource("css/temaClaro.css").toExternalForm();
+        //cargar el fxml con el que iniciara la ventana
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/mainWindow.fxml"));
         Parent root = loader.load();
+        //crea escena
         Scene scene = new Scene(root);
         scene.getStylesheets().add(css);
 
+        //se instancia la clase mainwindow para poder pasarle el stage y la scene
         MainWindow mainWindow = loader.getController();
         mainWindow.setStage(primaryStage);
         mainWindow.setScene(scene);
